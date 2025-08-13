@@ -1,9 +1,0 @@
-README.md
-pyproject.toml
-src/taller2_mlopspkg/__init__.py
-src/taller2_mlopspkg/core.py
-src/taller2_mlopspkg_angelcast2002.egg-info/PKG-INFO
-src/taller2_mlopspkg_angelcast2002.egg-info/SOURCES.txt
-src/taller2_mlopspkg_angelcast2002.egg-info/dependency_links.txt
-src/taller2_mlopspkg_angelcast2002.egg-info/top_level.txt
-test/test_core.py
