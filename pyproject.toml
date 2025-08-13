@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taller2-mlopspkg-angelcast2002"
+version = "0.1.0"
+description = "Paquete de ejemplo para Taller 2 MLOps: CI + Publish"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Angel Castellanos" }]
+license = { text = "MIT" }
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+Homepage = "https://github.com/angelcast2002/Taller-2-MLOPS"
+
+[tool.setuptools]
+package-dir = {""="src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

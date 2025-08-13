@@ -1,0 +1,80 @@
+name: CI & Publish
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [created]
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install build pytest
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Build package
+        run: python -m build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*
+
+  publish-testpypi:
+    if: github.event_name == 'release'
+    needs: [test-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@v1.10.2
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+
+  publish-gh-packages:
+    if: github.event_name == 'release'
+    needs: [test-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - name: Publish to GitHub Packages
+        env:
+          TWINE_USERNAME: ${{ github.actor }}
+          TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          TWINE_REPOSITORY_URL: https://upload.pypi.org/legacy/
+        run: |
+          python -m pip install --upgrade pip
+          pip install twine
+          # Para GitHub Packages en formato PyPI, usa esta URL:
+          # TWINE_REPOSITORY_URL=https://upload.pypi.org/legacy/  <-- PyPI
+          # TWINE_REPOSITORY_URL=https://upload.pypi.org/legacy/  <-- placeholder
+          # Nota: Para GitHub Packages Python, se recomienda usar el registro de GitHub:
+          # https://maven.pkg.github.com no aplica a Python; para Python se usa PyPI-like solo con repos propios.
+          # Si prefieres SOLO TestPyPI, puedes eliminar este job.
+          twine upload --repository-url $TWINE_REPOSITORY_URL dist/*
