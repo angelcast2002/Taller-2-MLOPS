@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: taller2-mlopspkg-angelcast2002
+Version: 0.1.0
+Summary: Paquete de ejemplo para Taller 2 MLOps: CI + Publish
+Author: Angel Castellanos
+License: MIT
+Project-URL: Homepage, https://github.com/angelcast2002/Taller-2-MLOPS
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# Taller 2 MLOps – CI + Publish
+
+Paquete de ejemplo para automatizar:
+- Pruebas (pytest)
+- Build (wheel/sdist)
+- Publicación a TestPyPI (opcional: GitHub Packages)
+
