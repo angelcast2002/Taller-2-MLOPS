@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "taller2-mlopspkg-angelcast2002"
-version = "0.1.2"
+version = "0.1.3"
 description = "Paquete de ejemplo para Taller 2 MLOps: CI + Publish"
 readme = "README.md"
 requires-python = ">=3.10"
