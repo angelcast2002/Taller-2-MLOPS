@@ -56,29 +56,3 @@ jobs:
           user: __token__
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
           skip-existing: true
-
-  publish-gh-packages:
-    if: github.event_name == 'release'
-    needs: [test-build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-      - name: Publish to GitHub Packages
-        env:
-          TWINE_USERNAME: ${{ github.actor }}
-          TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          TWINE_REPOSITORY_URL: https://upload.pypi.org/legacy/
-        run: |
-          python -m pip install --upgrade pip
-          pip install twine
-          # Para GitHub Packages en formato PyPI, usa esta URL:
-          # TWINE_REPOSITORY_URL=https://upload.pypi.org/legacy/  <-- PyPI
-          # TWINE_REPOSITORY_URL=https://upload.pypi.org/legacy/  <-- placeholder
-          # Nota: Para GitHub Packages Python, se recomienda usar el registro de GitHub:
-          # https://maven.pkg.github.com no aplica a Python; para Python se usa PyPI-like solo con repos propios.
-          # Si prefieres SOLO TestPyPI, puedes eliminar este job.
-          twine upload --repository-url $TWINE_REPOSITORY_URL dist/*
